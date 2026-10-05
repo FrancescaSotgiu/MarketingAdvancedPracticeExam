@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Marketing — Advanced Practice Exam</title>
+<style>
+/* Layout: one calm reading column, Apple product-page rhythm. Start screen, then one question per screen with a sticky toolbar (timer, progress, score), then a review. */
+:root{
+  --bg:#ffffff; --band:#f5f5f7; --fg:#1d1d1f; --muted:#6e6e73; --line:#d2d2d7; --accent:#0066cc; --good:#1b7f3b; --navbg:rgba(251,251,253,.82);
+  --sans:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --mono:"SF Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#000;--band:#151517;--fg:#f5f5f7;--muted:#a1a1a6;--line:#38383a;--accent:#2997ff;--good:#4cc46f;--navbg:rgba(22,22,23,.82);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#000;--band:#151517;--fg:#f5f5f7;--muted:#a1a1a6;--line:#38383a;--accent:#2997ff;--good:#4cc46f;--navbg:rgba(22,22,23,.82);color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:17px;line-height:1.5;letter-spacing:-.016em;-webkit-font-smoothing:antialiased;margin:0}
+a{color:var(--accent)}
+button{font:inherit;cursor:pointer}
+button:focus-visible,textarea:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:820px;margin:0 auto;padding-inline:22px}
+h1,h2,h3{margin:0;font-weight:600;text-wrap:balance}
+.muted{color:var(--muted)}
+.btn{background:var(--accent);color:#fff;border:0;border-radius:980px;padding:11px 22px;font-size:17px}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:transparent;color:var(--accent);padding:11px 4px}
+.btn.quiet{background:var(--band);color:var(--fg)}
+.btn[disabled]{opacity:.4;cursor:default}
+
+/* start */
+#start .hero{padding-block:88px 40px}
+.eyebrow{font-size:17px;font-weight:600;color:var(--muted);margin:0 0 10px}
+#start h1{font-size:clamp(38px,6vw,60px);line-height:1.06;letter-spacing:-.02em}
+.lead{font-size:clamp(19px,2.2vw,21px);color:var(--muted);margin:18px 0 0;max-width:36em}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:40px 0}
+.fact{background:var(--band);border-radius:18px;padding:20px 22px}
+.fact b{display:block;font-size:28px;font-weight:600;font-variant-numeric:tabular-nums}
+.fact span{font-size:14px;color:var(--muted)}
+.sections{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.sections li{display:grid;grid-template-columns:1fr auto;gap:16px;padding:14px 0;border-bottom:1px solid var(--line);font-size:16px}
+.sections li span:last-child{color:var(--muted);font-variant-numeric:tabular-nums}
+.how{margin:36px 0 0;font-size:15px;color:var(--muted);max-width:40em}
+.startrow{display:flex;gap:20px;align-items:center;flex-wrap:wrap;margin:36px 0 96px}
+@media (max-width:560px){.facts{grid-template-columns:1fr}}
+
+/* toolbar */
+.bar{position:sticky;top:55px;z-index:5;background:var(--navbg);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:52px;font-size:14px}
+.bar .t{font-weight:600}
+.timer{font-variant-numeric:tabular-nums;display:flex;gap:10px;align-items:center}
+.timer button{background:none;border:0;color:var(--accent);font-size:14px;padding:4px}
+.progress{height:2px;background:var(--line)}
+.progress i{display:block;height:100%;background:var(--fg);width:0;transition:width .3s}
+@media (prefers-reduced-motion:reduce){.progress i{transition:none}}
+
+/* question */
+.q{padding-block:48px 40px}
+.qmeta{display:flex;gap:12px;flex-wrap:wrap;font-size:14px;color:var(--muted);font-weight:600}
+.q h2{font-size:clamp(26px,3.6vw,34px);line-height:1.15;margin:10px 0 24px;letter-spacing:-.01em}
+.case{background:var(--band);border-radius:18px;padding:24px 26px;margin:0 0 24px;font-size:16px}
+.case p{margin:0 0 .8em}.case p:last-child{margin:0}
+.case table{border-collapse:collapse;margin:8px 0 4px;font-size:15px;font-variant-numeric:tabular-nums;width:100%}
+.case td,.case th{padding:6px 10px 6px 0;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.case th{font-weight:600;font-size:13px;color:var(--muted)}
+.tw{overflow-x:auto}
+.ask{margin:0 0 20px;padding:0;list-style:none;counter-reset:a}
+.ask li{padding:10px 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:36px 1fr auto;gap:8px}
+.ask li:first-child{border-top:1px solid var(--line)}
+.ask li::before{counter-increment:a;content:"(" counter(a,lower-alpha) ")";color:var(--muted);font-weight:600}
+.ask li em{font-style:normal;color:var(--muted);font-size:14px;font-variant-numeric:tabular-nums;white-space:nowrap}
+textarea{width:100%;min-height:220px;resize:vertical;font:inherit;font-size:16px;line-height:1.5;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:16px}
+.wc{font-size:13px;color:var(--muted);margin-top:6px;text-align:right}
+.reveal{margin-top:20px}
+.model{margin-top:20px;border-top:1px solid var(--line);padding-top:24px}
+.model h3{font-size:21px;margin-bottom:8px}
+.model .why{color:var(--muted);font-size:15px;margin:0 0 16px}
+.model .ans{font-size:16px}
+.model .ans p{margin:0 0 .9em}
+.model .ans b{font-weight:600}
+.calc{font-family:var(--mono);font-size:13.5px;background:var(--band);border-radius:12px;padding:14px 16px;overflow-x:auto;white-space:pre;line-height:1.6;margin:0 0 1em}
+.check{margin:20px 0 0;padding:20px 22px;border:1px solid var(--line);border-radius:18px}
+.check h4{margin:0 0 10px;font-size:15px;font-weight:600}
+.check label{display:grid;grid-template-columns:22px 1fr auto;gap:10px;align-items:start;padding:7px 0;font-size:15px;cursor:pointer}
+.check label em{font-style:normal;color:var(--muted);font-variant-numeric:tabular-nums;font-size:14px}
+.check input{margin-top:3px;width:16px;height:16px;accent-color:var(--fg)}
+.check .sum{border-top:1px solid var(--line);margin-top:10px;padding-top:10px;font-size:15px;display:flex;justify-content:space-between}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-block:32px 96px}
+
+/* review */
+.rev{padding-block:64px 96px}
+.rev h1{font-size:clamp(34px,5vw,48px);letter-spacing:-.015em}
+.score{font-size:clamp(56px,10vw,96px);font-weight:600;letter-spacing:-.03em;font-variant-numeric:tabular-nums;margin:24px 0 4px}
+.rows{list-style:none;margin:32px 0 0;padding:0;border-top:1px solid var(--line)}
+.rows li{display:grid;grid-template-columns:1fr auto;gap:16px;padding:14px 0;border-bottom:1px solid var(--line);font-size:16px}
+.rows li span:last-child{font-variant-numeric:tabular-nums;color:var(--muted)}
+.rows li button{background:none;border:0;color:var(--accent);padding:0;text-align:left;font-size:16px}
+.band-note{margin-top:32px;font-size:15px;color:var(--muted);max-width:40em}
+.brandrow{margin-bottom:28px}
+.vulogo{display:inline-flex;align-items:center;gap:10px;font-weight:700;font-size:22px;letter-spacing:-.02em;color:var(--fg)}
+.vulogo span{font-size:13px;font-weight:600;letter-spacing:0;border-left:1px solid var(--line);padding-left:10px}
+.credit{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justify-content:space-between}
+.credit .vulogo{font-size:16px}
+footer{border-top:1px solid var(--line);padding-block:20px;font-size:12px;color:var(--muted)}
+.vu-head{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:10px 22px;background:var(--navbg);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--line)}
+.vu-head img{height:34px;width:auto;display:block;background:#fff;border-radius:6px;padding:2px 4px}
+.vu-right{display:flex;align-items:center;gap:20px;flex-wrap:wrap;justify-content:flex-end}
+.vu-nav{display:flex;gap:14px;align-items:center;font-size:14px}
+.vu-nav a{color:var(--accent);text-decoration:none}
+.vu-nav a:hover{text-decoration:underline}
+.vu-nav button{font:inherit;font-size:14px;background:var(--band);color:var(--fg);border:1px solid var(--line);border-radius:980px;padding:5px 12px;cursor:pointer}
+@media (max-width:520px){.vu-right{justify-content:center}}
+.vu-credit{text-align:right;font-size:13px;line-height:1.35;color:var(--muted)}
+.vu-credit b{display:block;color:var(--fg);font-weight:600;font-size:14px}
+@media (max-width:520px){.vu-head{justify-content:center}.vu-credit{text-align:center}.bar{top:132px}}
+</style></head><body>
+<header class="vu-head"><img src="vu-logo.png" alt="Vrije Universiteit Amsterdam"><div class="vu-right"><nav class="vu-nav"><a href="https://francescasotgiu.com/#teaching">All quizzes</a><button type="button" onclick="try{localStorage.clear()}catch(e){};location.href=location.pathname">Restart</button></nav><div class="vu-credit"><b>Prof. Francesca Sotgiu</b>Developed for the VU Marketing course 2026</div></div></header>
+
+<div id="start">
+  <div class="wrap hero">
+    <div class="brandrow"><span class="vulogo" aria-label="Vrije Universiteit Amsterdam">VU<span>Vrije Universiteit Amsterdam</span></span></div>
+    <p class="eyebrow">Marketing · Advanced practice exam</p>
+    <h1>Marketing decisions at Kern.</h1>
+    <p class="lead">An advanced open-book practice exam for professionals. All cases follow Kern, a fictional chain of physiotherapy, sport and wellness centres. You will segment its customers, price its membership, value a member, judge whether a campaign really worked, and defend a channel decision to your board.</p>
+    <div class="facts">
+      <div class="fact"><b>120</b><span>minutes, open book</span></div>
+      <div class="fact"><b>8</b><span>case questions</span></div>
+      <div class="fact"><b>100</b><span>points in total</span></div>
+    </div>
+    <ul class="sections" id="toc"></ul>
+    <p class="how">Write your answer first, then open the model answer. Score yourself honestly with the checklist under each model answer; your total appears at the end. A calculator is useful for questions 2 to 4. Your answers stay in this browser only and are not sent anywhere.</p>
+    <div class="startrow">
+      <button class="btn" id="go" type="button">Begin exam</button>
+      <span class="muted" style="font-size:14px">Developed by <a href="https://francescasotgiu.com" style="color:inherit;font-weight:600">Francesca Sotgiu</a> for the VU Marketing course 2026</span>
+    </div>
+  </div>
+</div>
+
+<div id="exam" hidden>
+  <div class="bar">
+    <div class="wrap">
+      <span class="t" id="qpos">Question 1 of 8</span>
+      <span class="timer"><span id="clock">2:00:00</span><button type="button" id="pause">Pause</button></span>
+      <span id="pts">0 / 100</span>
+    </div>
+    <div class="progress"><i id="prog"></i></div>
+  </div>
+  <div class="wrap">
+    <article class="q" id="q"></article>
+    <div class="nav">
+      <button class="btn quiet" id="prev" type="button">Previous</button>
+      <button class="btn" id="next" type="button">Next</button>
+    </div>
+  </div>
+</div>
+
+<div id="review" hidden>
+  <div class="wrap rev">
+    <p class="eyebrow">Exam complete</p>
+    <h1>Your self-assessed score</h1>
+    <div class="score" id="final">0</div>
+    <p class="muted" id="finalsub">out of 100</p>
+    <ul class="rows" id="revrows"></ul>
+    <p class="band-note" id="bandnote"></p>
+    <div class="startrow">
+      <button class="btn" id="back" type="button">Review questions</button>
+      <button class="btn ghost" id="restart" type="button">Start again</button>
+    </div>
+  </div>
+</div>
+
+<footer><div class="wrap credit"><span class="vulogo" aria-label="Vrije Universiteit Amsterdam">VU<span>Vrije Universiteit Amsterdam</span></span><span>Developed by <a href="https://francescasotgiu.com" style="color:inherit;font-weight:600">Francesca Sotgiu</a> for the VU Marketing course 2026 · Practice material, not an official exam.</span></div></footer>
+
+<script>
+const Q = [
+{
+  id:'q1', section:'Customers and segmentation', pts:12,
+  title:'Who should Kern’s new “Back in the Game” programme serve?',
+  caseHtml:`<p><b>Kern</b> is a fictional chain of 12 physiotherapy, sport and wellness centres in the Netherlands (revenue €14m). Today it sells three things separately: physiotherapy sessions, gym memberships and group classes. The new CEO wants to launch <b>“Back in the Game”</b>: a 12-week programme combining physiotherapy, coached training and an app, for one monthly fee.</p>
+  <p>The marketing team proposes to segment the market as it always has: by age group (under 35, 35 to 55, over 55) and by gender.</p>
+  <div class="tw"><table><tr><th>What the pilot interviews (n = 40) showed</th></tr>
+  <tr><td>Recreational athletes with a recent injury (runners, padel and football players) are impatient to return and willing to pay well above the insurance-covered amount.</td></tr>
+  <tr><td>Office workers with back or neck complaints mostly want flexible evening slots; about half have an employer wellness budget they never use.</td></tr>
+  <tr><td>People over 65 value personal contact and are loyal, but prefer to pay per session.</td></tr>
+  <tr><td>Serious amateur athletes already work with a private coach and only want testing and injury prevention.</td></tr></table></div>`,
+  ask:[['Explain why age × gender is a weak basis for segmenting this offer. Propose a needs-based segmentation with two or three variables, and name the segments.',4],
+       ['Choose one target segment for the launch and justify the choice with the four tests of a good segment (measurable, substantial, accessible, actionable) and with Kern’s ability to win.',5],
+       ['Name one segment Kern should deliberately not target in year one, and why.',3]],
+  placeholder:'(a) …\n(b) …\n(c) …',
+  why:'Tests whether you can segment on the benefit a customer buys, not on how a customer is listed in a database.',
+  model:`<p><b>(a)</b> Age and gender describe who the customer is, not why they would buy a combined programme. Two 40-year-olds can want completely different things: one tore a calf muscle playing padel, the other has a stiff neck from desk work. The pilot shows that value is driven by <b>urgency of the goal</b> (getting back to a sport quickly versus general comfort), <b>who pays</b> (own pocket, insurer, employer) and <b>preferred format</b> (structured programme versus pay per session). A workable needs-based scheme:</p>
+  <p>• <b>“Injured and impatient”</b>: recent sports injury, clear goal, pays privately.<br>• <b>“Desk-bound and busy”</b>: chronic complaints, needs flexible times, employer budget available.<br>• <b>“Steady and loyal”</b>: older clients who want personal contact and per-session payment.<br>• <b>“Performance tuners”</b>: serious athletes who want testing and prevention, not rehab.</p>
+  <p><b>(b)</b> Strong answers pick <b>injured and impatient</b>. It is <i>measurable</i> (intake forms record injury and sport), <i>substantial</i> (Kern sees many sports injuries, and willingness to pay is high), <i>accessible</i> (sports clubs, running events, padel centres, Strava and club newsletters) and <i>actionable</i> (a 12-week programme with a clear “back to sport” goal maps directly onto the need). Kern can win because it combines physiotherapy and coached training under one roof, which neither a gym nor a stand-alone physio can offer. A defensible alternative is “desk-bound and busy” via employers, if argued with evidence on deal size and sales effort.</p>
+  <p><b>(c)</b> Avoid <b>“steady and loyal”</b> for this programme: they prefer to pay per session and value the personal relationship more than a structured package, so the offer does not fit their need. Also defensible: performance tuners, who already have coaches and want only a small part of the programme.</p>`,
+  rubric:[['Explains that demographics do not capture the reason to buy',2],['Uses at least two needs-based variables drawn from the pilot evidence',2],['Chooses one segment and applies all four tests explicitly',3],['Links the choice to a Kern capability (physio and training under one roof)',2],['Names a segment to avoid with a clear reason',3]]
+},
+{
+  id:'q2', section:'Pricing', pts:15,
+  title:'Should Kern raise the price of its membership?',
+  caseHtml:`<p>Kern’s all-in membership (gym, classes and one physio check per quarter) has these figures:</p>
+  <div class="tw"><table><tr><th>Item</th><th>Value</th></tr>
+  <tr><td>Price per member per month</td><td>€60</td></tr>
+  <tr><td>Variable cost per member per month (staff time, towels, app, physio checks)</td><td>€36</td></tr>
+  <tr><td>Members</td><td>5,000</td></tr>
+  <tr><td>Estimated price elasticity of demand</td><td>−1.5</td></tr></table></div>
+  <p>Without Kern, a typical member would pay for a budget gym (€35 per month) plus physiotherapy not covered by insurance (on average €30 per month). In a member survey, the convenience of one coordinated plan, with physio and trainers who talk to each other, was valued at about €15 per month.</p>`,
+  ask:[['Calculate the contribution margin per member and in total per month.',2],['Calculate how many members Kern can lose before a 10% price increase reduces total contribution. Then calculate how many members a 10% price cut would need to gain to keep total contribution unchanged.',4],['Using the elasticity, estimate total monthly contribution after a 10% increase and after a 10% cut. What do you recommend?',4],['Estimate the economic value to the customer (EVC) of the membership. What does it tell you about the current price?',3],['Give two reasons why the elasticity estimate could mislead management here.',2]],
+  placeholder:'Show your calculations.\n(a) …',
+  why:'Tests break-even pricing logic, elasticity and value-based pricing, the three tools managers mix up most often.',
+  model:`<p><b>(a)</b> Contribution per member = €60 − €36 = <b>€24</b> (40% margin). Total = 5,000 × €24 = <b>€120,000 per month</b>.</p>
+  <div class="calc">(b) Price +10%: new price €66, new contribution €30
+    break-even volume change = −ΔP / (CM + ΔP) = −6 / 30 = −20%
+    Kern can lose up to 20% of members (1,000) and still be no worse off.
+
+    Price −10%: new price €54, new contribution €18
+    required volume change = 24 / 18 − 1 = +33.3%
+    Kern must win 1,667 extra members just to stand still.</div>
+  <div class="calc">(c) Elasticity −1.5
+    +10% price → −15% members → 4,250 × €30 = €127,500  (+€7,500 per month)
+    −10% price → +15% members → 5,750 × €18 = €103,500  (−€16,500 per month)</div>
+  <p>Recommendation: <b>raise the price</b>. The expected loss (15%) is below the break-even loss (20%), and a cut destroys contribution because the required gain (33%) is far above what the market will deliver. With a 40% margin, cuts are much harder to recover than increases. Capacity matters too: 750 extra members would also make the gym more crowded.</p>
+  <p><b>(d)</b> EVC = reference value + differentiation value = €35 (budget gym) + €30 (physio otherwise paid) + €15 (value of coordination) = <b>€80</b>. At €60, Kern captures only three quarters of the value it creates. There is room to price higher, or to tier the offer (for example a premium tier with more physio checks for members recovering from injury).</p>
+  <p><b>(e)</b> Good reasons: elasticity is an average and hides segments (injured athletes are much less price sensitive than students); it is usually estimated from small past changes and may not hold for a 10% step; competitor reactions (a new budget gym nearby) are not in the number; members often have notice periods, so churn shows up with a delay; and a price rise may change the mix toward heavy users who cost more to serve.</p>`,
+  rubric:[['Contribution per member and in total correct',2],['Break-even loss for the increase (−20%) correct',2],['Required gain for the cut (+33%) correct',2],['Both elasticity scenarios calculated and a clear recommendation',4],['EVC of €80 with interpretation',3],['Two valid limitations of the elasticity estimate',2]]
+},
+{
+  id:'q3', section:'Customer value', pts:12,
+  title:'Is a half-price first year a good deal?',
+  caseHtml:`<p>Kern also sells a yearly membership for €600, paid at the start of each year. After service costs, each member contributes a margin of <b>€240 per year</b>. Annual retention is <b>80%</b> and Kern uses a discount rate of <b>10%</b>. Acquiring a new member through online advertising and trial sessions currently costs about <b>€200</b>.</p>
+  <p>For January, marketing proposes a campaign: <b>first year for half price</b> (€300), after which the normal fee applies. Past campaigns suggest that members acquired with a discount renew after year one at only <b>65%</b>; from year two onward they behave like regular members.</p>
+  <p>Useful formula, with margin m paid at the start of each year: CLV = m × (1 + d) / (1 + d − r).</p>`,
+  ask:[['Calculate the CLV of a regular member and their net value after acquisition cost.',3],['Calculate the CLV of a member acquired through the half-price offer.',4],['Under what condition would the campaign still create value? Be specific.',3],['Calculate how much CLV rises if retention of regular members improves from 80% to 85%, and draw one managerial conclusion.',2]],
+  placeholder:'(a) CLV = …',
+  why:'Tests customer lifetime value as a decision tool: comparing acquisition offers, setting an acquisition budget and valuing retention.',
+  model:`<div class="calc">(a) CLV = 240 × 1.10 / (1.10 − 0.80) = 264 / 0.30 = €880
+    net of acquisition: €880 − €200 = €680
+
+(b) Year 1 margin: €300 − €360 service cost = −€60
+    if renewed (65%), the member is worth a regular CLV one year later,
+    discounted one year: €880 / 1.10 = €800
+    CLV(promo) = −60 + 0.65 × 800 = €460</div>
+  <p>Check of the logic: for a regular member the same steps give 240 + 0.80 × 800 = €880, which matches (a).</p>
+  <p><b>(c)</b> Each promotional member is worth €420 less than a regular member (€880 − €460), and Kern loses money on them in year one. The campaign creates value only if it brings in members <b>who would not have joined otherwise</b> and whose acquisition cost stays below €460, or if it lowers acquisition cost per member by more than €420 (impossible, since it costs €200 today). If many January joiners would have joined at full price anyway, the campaign simply gives away margin. A strong answer proposes a test, for example offering the discount in some centres or to a random half of website visitors, to measure how many joiners are truly incremental.</p>
+  <div class="calc">(d) CLV at 85% = 264 / (1.10 − 0.85) = 264 / 0.25 = €1,056  (+€176, +20%)</div>
+  <p>Five points of retention raise the value of every member by 20%, without any acquisition spend. Retention work (onboarding, a check-in after the first month, follow-up when a member stops visiting) deserves at least as much budget as the January campaign.</p>`,
+  rubric:[['Regular CLV of €880 and net value of €680',3],['Negative first-year margin of −€60 identified',1],['Promo CLV of €460 with correct discounting',3],['Condition for value creation stated in terms of incrementality or acquisition cost',3],['Retention scenario of €1,056 with a managerial conclusion',2]]
+},
+{
+  id:'q4', section:'Marketing evidence', pts:12,
+  title:'Did the “New Year Reset” email really work?',
+  caseHtml:`<p>Kern’s marketing manager presents this slide to the management team:</p>
+  <p><b>“Members who opened our New Year Reset email spent 30% more on extras (personal training, massages, supplements) in January than members who did not. The campaign was a big success.”</b></p>
+  <p>The data analyst had quietly kept a random <b>holdout group</b>: 5,000 members who received no email, versus 20,000 who did.</p>
+  <div class="tw"><table><tr><th>Group</th><th>Members</th><th>Average January spend on extras</th></tr>
+  <tr><td>Received the email</td><td>20,000</td><td>€52</td></tr>
+  <tr><td>Holdout (no email)</td><td>5,000</td><td>€50</td></tr></table></div>
+  <p>The margin on extras is 30%. The campaign cost €0.40 per member emailed (design, discount vouchers used, platform fees).</p>`,
+  ask:[['Explain why the claim on the slide does not show that the email caused higher spending. Name at least two specific problems.',4],['Using the holdout data, calculate the incremental revenue, incremental margin and return on the campaign.',5],['The CEO asks you to design the measurement of next quarter’s campaigns. Give three rules you would put in place.',3]],
+  placeholder:'(a) …',
+  why:'Tests whether you can tell correlation from causation in marketing data and calculate incremental return, a key skill for anyone who signs off budgets.',
+  model:`<p><b>(a)</b> Comparing openers with non-openers compares different people, not the effect of the email. <b>Selection bias</b>: members who open Kern emails are more engaged, visit more often and would have spent more anyway. <b>Reverse causality and timing</b>: members already planning to book a trainer in January are more likely to open a New Year email. <b>Wrong comparison group</b>: the right comparison is everyone who received the email versus comparable members who did not, regardless of opening. Opening is itself an outcome, not the treatment.</p>
+  <div class="calc">(b) incremental spend per emailed member = €52 − €50 = €2
+    incremental revenue = 20,000 × €2      = €40,000
+    incremental margin  = 30% × €40,000    = €12,000
+    campaign cost       = 20,000 × €0.40   = €8,000
+    net contribution    = €12,000 − €8,000 = €4,000
+    return on spend     = 4,000 / 8,000    = 50%</div>
+  <p>The campaign did pay off, but the true lift is 4% (€2 on €50), not 30%. The slide overstated the effect more than sevenfold.</p>
+  <p><b>(c)</b> Good rules: keep a random holdout for every campaign (5 to 10% of members); judge campaigns on incremental margin, not on opens, clicks or bookings attributed by the last click; agree on the success metric and analysis before launch; make sure the holdout is large enough to detect a realistic lift; and report campaigns that failed as well as those that worked, so the organisation learns.</p>`,
+  rubric:[['Identifies selection bias between openers and non-openers',2],['Identifies a second problem (reverse causality, wrong comparison, timing)',2],['Incremental revenue and margin correct',3],['Net contribution and return correct',2],['Three concrete, practical measurement rules',3]]
+},
+{
+  id:'q5', section:'Brand and sustainability', pts:12,
+  title:'Talk about it or stay quiet? Kern’s green credentials',
+  caseHtml:`<p>Kern has invested heavily in sustainability: solar panels on every centre, spinning bikes that feed energy back into the building, no single-use plastic, and 60% lower energy use per member than in 2019. At the same time, member reviews complain about crowded gyms at peak hours and long waiting times for physiotherapy appointments.</p>
+  <p>The team is split. One group wants a large campaign: <b>“The greenest gym in the Netherlands.”</b> The other wants to say nothing about sustainability until the service problems are fixed, fearing accusations of greenwashing and a backlash in Google reviews and on Instagram.</p>`,
+  ask:[['Explain the difference between greenwashing and greenhushing, and why each is a risk for Kern.',3],['Using the idea of brand fit, argue whether sustainability is a credible message for a health and fitness brand. Consider what members already believe and experience.',4],['Recommend a communication approach: what to say, where, and what proof to show. Explain how you would handle the service complaints in the same plan.',5]],
+  placeholder:'(a) …',
+  why:'Tests judgement on a brand dilemma where both speaking up and staying silent carry costs.',
+  model:`<p><b>(a)</b> <b>Greenwashing</b> is claiming more environmental benefit than the company delivers or can prove. Here the factual basis is real, so the risk lies in the framing: a “greenest gym in the Netherlands” superlative invites scrutiny, and the Dutch ACM requires comparative sustainability claims to be substantiated. <b>Greenhushing</b> is deliberately under-communicating real sustainability performance. Its cost is that Kern gives up a genuine point of difference that matters to part of its audience, and stakeholders may assume it has nothing to report.</p>
+  <p><b>(b)</b> Sustainability fits a health brand reasonably well: both are about long-term wellbeing, and features such as energy-generating bikes are visible and easy to believe. But it is not why most people choose a gym or a physiotherapist; they choose on results, convenience and service. When members are frustrated about the basics (crowding, waiting times), a sustainability campaign can read as deflection. Fit with the brand’s values is decent; fit with the current member experience is low.</p>
+  <p><b>(c)</b> Strong answers recommend <b>specific, verifiable and modest</b> communication rather than either extreme. Share concrete facts (“60% less energy per member since 2019; our bikes power the lights”) inside the centres, on the website and in the app, where members already are, rather than in a national campaign; avoid superlatives. At the same time, tackle the service problems openly: acknowledge them, show what is changing (extra evening slots, a live crowd meter in the app, more physiotherapists) and report progress. Sequence matters: a broad green campaign should wait until service has visibly improved, while factual sustainability information can continue at the point of experience.</p>`,
+  rubric:[['Defines greenwashing and greenhushing correctly',2],['Applies each risk to Kern',1],['Distinguishes fit with brand values from fit with the current experience',4],['Recommends specific, verifiable claims with proof',2],['Places messages where members are, not only in broad media',1],['Integrates the service issues with sequencing',2]]
+},
+{
+  id:'q6', section:'Channels and online reviews', pts:12,
+  title:'Going direct without losing the platform',
+  caseHtml:`<p>About 30% of Kern’s class visits come through a <b>sports platform</b> (in the style of OneFit or ClassPass) where users buy credits and book classes at many gyms. The platform keeps about 40% of each booking and owns the customer relationship. Employers also buy Kern sessions through a corporate wellness broker that takes 20%.</p>
+  <p>Kern wants to launch its own app with direct booking, memberships and reviews. The platform has hinted that Kern’s classes could be shown lower in search results if Kern starts “pulling users off the platform”.</p>`,
+  ask:[['Identify the main sources of channel conflict and what each party stands to lose.',3],['Design a multi-channel model that grows direct business while keeping the platform and broker useful. Address pricing, the division of roles and how you move customers over.',6],['Should Kern show member reviews in its app and on its website? Give one argument for and one against, and a recommendation.',3]],
+  placeholder:'(a) …',
+  why:'Tests channel design with real partners and a realistic view of online reviews in a health setting.',
+  model:`<p><b>(a)</b> The platform fears losing bookings and commission, and its value to users depends on many gyms staying on it. Kern pays a high commission and does not own the customer data, so it cannot build loyalty or sell physiotherapy and memberships to platform users. The broker fears being bypassed for corporate deals. Price transparency is a risk too: if direct prices are clearly lower, the platform may retaliate.</p>
+  <p><b>(b)</b> A strong design gives each channel a role instead of fighting for the same booking:</p>
+  <p>• <b>Platform</b> = acquisition: off-peak classes and trial visits for people who do not know Kern yet; keep a limited, stable timetable there.<br>• <b>Own app</b> = loyalty and value: memberships, physiotherapy, personal training, programmes and peak-hour booking; offer benefits the platform cannot (priority booking, progress tracking, a physio check), rather than simply lower prices.<br>• <b>Moving customers over</b>: after a set number of platform visits, invite users in the centre (not through the platform) to a member trial; train front-desk staff to do this well.<br>• <b>Broker</b>: keep for large employers where the broker handles contracts; sell directly to small firms.<br>• <b>Measure</b>: track the cost per acquired member by channel and the share of platform users who convert.</p>
+  <p>The test of a good answer: every channel has a clear job, and partners still see a reason to work with Kern.</p>
+  <p><b>(c)</b> <b>For</b>: prospective members and patients rely heavily on reviews to judge trainers and therapists; reviews build trust and help Kern’s pages rank in search. <b>Against</b>: in a health setting, reviews may contain medical details, which creates privacy concerns, and a few negative reviews about one therapist can hurt the whole brand. Recommendation: show reviews of the service (scheduling, cleanliness, atmosphere, results), moderate for personal medical information, ask every member for a review after their programme, and respond publicly to criticism.</p>`,
+  rubric:[['Identifies conflict from the platform, broker and Kern side',3],['Clear role for each channel',2],['A way to move customers to the direct channel without open price war',2],['Pricing or benefit logic that avoids retaliation',2],['Balanced review argument with a recommendation and safeguards',3]]
+},
+{
+  id:'q7', section:'Marketing and AI', pts:10,
+  title:'When people read the AI summary instead of the reviews',
+  caseHtml:`<p>When someone searches for “physiotherapist near me” or “gym Utrecht”, search engines and map apps now show an <b>AI-generated summary</b> of a location’s reviews (“People like the trainers but mention crowded evenings and parking”). Many people read only that summary before choosing.</p>
+  <p>You are responsible for marketing at Kern’s 12 centres.</p>`,
+  ask:[['Explain how this changes the way online word of mouth reaches prospective members, compared with reading individual reviews.',3],['What should Kern do differently in managing reviews and its online information?',4],['Name one risk and one opportunity for Kern.',3]],
+  placeholder:'(a) …',
+  why:'Tests whether you can reason about a new development using established principles of word of mouth.',
+  model:`<p><b>(a)</b> Word of mouth used to reach people mostly directly: they read individual reviews and judged the reviewers themselves. Now an algorithm sits in between and selects, compresses and frames what people see. A few recurring themes dominate; nuance, context and the reviewer’s own voice disappear. Part of the persuasion now comes from the platform’s AI, so trust shifts from other customers to the system that summarises them.</p>
+  <p><b>(b)</b> Manage <b>themes</b>, not only star ratings: track which topics appear in each centre’s summary and fix the operational causes behind recurring complaints (crowded evenings will appear in every summary until capacity changes). Encourage detailed reviews that mention specific aspects (therapist, programme, results). Keep opening hours, services, parking information and prices complete and identical across Google, map apps and the website, so the AI has accurate material. Respond to issues publicly. Report each centre’s summary as a new monthly metric.</p>
+  <p><b>(c)</b> <b>Risk</b>: one repeated complaint can define a centre in the summary even if it affects few members, and Kern cannot edit the summary. <b>Opportunity</b>: a genuine strength many reviewers mention (for example knowledgeable trainers) is amplified to every prospect and can anchor Kern’s positioning. Strong answers note that you cannot game the summary; you can only change the experience that feeds it.</p>`,
+  rubric:[['Explains the shift from direct peer reviews to an AI-mediated summary',3],['At least three concrete changes in review and information management',4],['One realistic risk and one realistic opportunity',3]]
+},
+{
+  id:'q8', section:'Application to your organisation', pts:15,
+  title:'A one-page marketing memo for your own board',
+  caseHtml:`<p>Choose your own organisation, or one you know well. Write a memo of at most 400 words to your board or management team.</p>`,
+  ask:[['State one marketing problem or opportunity, with the evidence you have today.',3],['Identify the target customers involved and what they value.',3],['Propose one decision and a test that would show whether it works before full roll-out.',4],['Define the KPI you would report and the threshold for success or stopping.',3],['Name the main risk and how you will manage it.',2]],
+  placeholder:'To: Board of …\nFrom: …\nSubject: …',
+  why:'Tests whether you can turn course concepts into a decision your organisation could actually take.',
+  model:`<p>There is no single right answer. A strong memo reads like this example, written for a fictional city museum:</p>
+  <p><b>Problem.</b> 70% of our visitors come once and never return; only 4% of first-time visitors buy a Museumkaart-linked membership or a second ticket within a year. Our ticket data show most first visits are tourists or families during school holidays.</p>
+  <p><b>Customers.</b> Families from the region with children aged 6 to 12. They value activities that keep children engaged, easy planning and value for money across several visits.</p>
+  <p><b>Decision and test.</b> Introduce a “family season pass” offered at the exit, with a children’s trail that changes every quarter. Test it for three months on weekends only, alternating weekends with and without the offer.</p>
+  <p><b>KPI.</b> Share of family visitors who return within six months. Success: at least 6 percentage points higher for families who visited on offer weekends. Stop if the difference is under 2 points.</p>
+  <p><b>Risk.</b> Front-desk staff may not have time to explain the pass at busy moments; we will add a QR code on the trail map and train two staff members per weekend.</p>
+  <p>What earns the points: a specific problem backed by numbers, a clear customer, one decision rather than a list, a real comparison group, a measurable threshold set in advance, and a risk that is specific to the organisation.</p>`,
+  rubric:[['Specific problem with existing evidence',3],['Target customer and what they value',3],['One decision with a test that includes a comparison group',4],['KPI with a success or stop threshold set in advance',3],['Specific risk with a mitigation',2]]
+}
+];
+
+const TOTAL = Q.reduce((s,q)=>s+q.pts,0);
+const LIMIT = 120*60;
+const state = { i:0, answers:{}, revealed:{}, checks:{}, left:LIMIT, running:false };
+const KEY='advanced-marketing-exam-kern-v1';
+try{ const s=JSON.parse(localStorage.getItem(KEY)||'null'); if(s&&s.answers){Object.assign(state,s,{running:false});} }catch(e){}
+function save(){ try{ localStorage.setItem(KEY,JSON.stringify({i:state.i,answers:state.answers,revealed:state.revealed,checks:state.checks,left:state.left})); }catch(e){} }
+
+const $=id=>document.getElementById(id);
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+// table of contents
+$('toc').innerHTML = Q.map((q,n)=>`<li><span>${n+1}. ${q.section}</span><span>${q.pts} pts</span></li>`).join('');
+
+function score(id){ const q=Q.find(x=>x.id===id); const c=state.checks[id]||[]; return q.rubric.reduce((s,r,k)=>s+(c[k]?r[1]:0),0); }
+function total(){ return Q.reduce((s,q)=>s+score(q.id),0); }
+function words(t){ return (t.trim().match(/\S+/g)||[]).length; }
+
+function render(){
+  const q=Q[state.i], n=state.i;
+  $('qpos').textContent=`Question ${n+1} of ${Q.length}`;
+  $('pts').textContent=`${total()} / ${TOTAL}`;
+  $('prog').style.width=((n+1)/Q.length*100)+'%';
+  const ans=state.answers[q.id]||'';
+  const rev=!!state.revealed[q.id];
+  const c=state.checks[q.id]||[];
+  $('q').innerHTML=`
+    <div class="qmeta"><span>${q.section}</span><span>${q.pts} points</span></div>
+    <h2>${q.title}</h2>
+    <div class="case">${q.caseHtml}</div>
+    <ol class="ask">${q.ask.map(a=>`<li><span>${a[0]}</span><em>${a[1]} pts</em></li>`).join('')}</ol>
+    <label for="ans-${q.id}" class="muted" style="font-size:13px">Your answer</label>
+    <textarea id="ans-${q.id}" placeholder="${esc(q.placeholder)}">${esc(ans)}</textarea>
+    <div class="wc" id="wc">${words(ans)} words</div>
+    <div class="reveal">${rev?'':`<button class="btn quiet" type="button" id="show">Show model answer</button>`}</div>
+    ${rev?`<section class="model"><h3>Model answer</h3><p class="why">${q.why}</p><div class="ans">${q.model}</div>
+      <div class="check"><h4>Score yourself</h4>
+      ${q.rubric.map((r,k)=>`<label><input type="checkbox" data-k="${k}" ${c[k]?'checked':''}><span>${r[0]}</span><em>${r[1]}</em></label>`).join('')}
+      <div class="sum"><span>Your score</span><b id="qs">${score(q.id)} / ${q.pts}</b></div></div></section>`:''}`;
+  const ta=$('ans-'+q.id);
+  ta.addEventListener('input',()=>{state.answers[q.id]=ta.value;$('wc').textContent=words(ta.value)+' words';save();});
+  const sh=$('show'); if(sh) sh.addEventListener('click',()=>{state.revealed[q.id]=true;save();render();});
+  $('q').querySelectorAll('.check input').forEach(cb=>cb.addEventListener('change',()=>{
+    const arr=state.checks[q.id]||(state.checks[q.id]=[]); arr[+cb.dataset.k]=cb.checked;
+    $('qs').textContent=`${score(q.id)} / ${q.pts}`; $('pts').textContent=`${total()} / ${TOTAL}`; save();
+  }));
+  $('prev').disabled = n===0;
+  $('next').textContent = n===Q.length-1 ? 'Finish' : 'Next';
+}
+
+function fmt(s){ const h=Math.floor(s/3600), m=Math.floor(s%3600/60), x=s%60; return `${h}:${String(m).padStart(2,'0')}:${String(x).padStart(2,'0')}`; }
+let tick=null;
+function startClock(){ state.running=true; $('pause').textContent='Pause'; if(tick) return; tick=setInterval(()=>{ if(!state.running) return; if(state.left>0){state.left--; $('clock').textContent=fmt(state.left); if(state.left%15===0) save();} else { $('clock').textContent='Time is up'; } },1000); }
+$('pause').addEventListener('click',()=>{ state.running=!state.running; $('pause').textContent=state.running?'Pause':'Resume'; });
+
+function show(view){ ['start','exam','review'].forEach(v=>$(v).hidden=(v!==view)); window.scrollTo(0,0); }
+$('go').addEventListener('click',()=>{ show('exam'); $('clock').textContent=fmt(state.left); render(); startClock(); });
+$('prev').addEventListener('click',()=>{ if(state.i>0){state.i--;save();render();window.scrollTo(0,0);} });
+$('next').addEventListener('click',()=>{ if(state.i<Q.length-1){state.i++;save();render();window.scrollTo(0,0);} else { finish(); } });
+
+function finish(){
+  state.running=false;
+  const t=total();
+  $('final').textContent=t;
+  $('revrows').innerHTML=Q.map((q,n)=>`<li><button type="button" data-n="${n}">${n+1}. ${q.title}</button><span>${state.revealed[q.id]?score(q.id):'not scored'} / ${q.pts}</span></li>`).join('');
+  $('revrows').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{state.i=+b.dataset.n;show('exam');render();}));
+  const unscored=Q.filter(q=>!state.revealed[q.id]).length;
+  $('bandnote').textContent = (unscored?`${unscored} question${unscored>1?'s are':' is'} not yet scored. `:'') +
+    (t>=75?'Strong work. Your answers combine calculation with managerial judgement.':
+     t>=55?'A solid base. Revisit the questions where you lost most points, especially the calculations.':
+     'Worth another round. Work through the model answers for questions 2 to 4 step by step, then try again.');
+  show('review');
+}
+$('back').addEventListener('click',()=>{ state.i=0; show('exam'); render(); });
+$('restart').addEventListener('click',()=>{ Object.assign(state,{i:0,answers:{},revealed:{},checks:{},left:LIMIT,running:false}); save(); $('clock').textContent=fmt(LIMIT); show('start'); });
+</script>
+
+</body></html>
